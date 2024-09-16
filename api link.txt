@@ -1,0 +1,5 @@
+http://localhost/api/index.php          //(method=get)
+http://localhost/api/index.php?name=mdrashedulkarim&email=dul@gmail.com    //method=get
+http://localhost/api/from.html // method post 
+http://localhost/api/index.php?id=1   //method=put
+http://localhost/api/index.php?id=1   // method = delete

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD API Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>CRUD API Interface</h1>
+
+    <!-- Create User Form -->
+    <div class="form-container">
+        <h2>Create User</h2>
+        <form id="createUserForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter email" required>
+
+            <button type="submit">Create User</button>
+        </form>
+        <div class="result" id="createResult"></div>
+    </div>
+
+    <!-- Read User by ID Form -->
+    <div class="form-container">
+        <h2>Get User</h2>
+        <form id="getUserForm">
+            <label for="userId">User ID:</label>
+            <input type="text" id="userId" name="userId" placeholder="Enter user ID to retrieve" required>
+
+            <button type="submit">Get User</button>
+        </form>
+        <div class="result" id="getResult"></div>
+    </div>
+
+    <!-- Update User Form -->
+    <div class="form-container">
+        <h2>Update User</h2>
+        <form id="updateUserForm">
+            <label for="updateId">User ID:</label>
+            <input type="text" id="updateId" name="updateId" placeholder="Enter user ID to update" required>
+
+            <label for="updateName">New Name:</label>
+            <input type="text" id="updateName" name="updateName" placeholder="Enter new name" required>
+            
+            <label for="updateEmail">New Email:</label>
+            <input type="email" id="updateEmail" name="updateEmail" placeholder="Enter new email" required>
+
+            <button type="submit">Update User</button>
+        </form>
+        <div class="result" id="updateResult"></div>
+    </div>
+
+    <!-- Delete User Form -->
+    <div class="form-container">
+        <h2>Delete User</h2>
+        <form id="deleteUserForm">
+            <label for="deleteId">User ID:</label>
+            <input type="text" id="deleteId" name="deleteId" placeholder="Enter user ID to delete" required>
+
+            <button type="submit">Delete User</button>
+        </form>
+        <div class="result" id="deleteResult"></div>
+    </div>
+
+    <script>
+        // CRUD API URL
+        const apiURL = 'http://localhost/api/index.php';
+
+        // Create User
+        document.getElementById('createUserForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            
+            const response = await fetch(apiURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email })
+            });
+            const result = await response.json();
+            document.getElementById('createResult').innerHTML = JSON.stringify(result);
+        });
+
+        // Get User by ID
+        document.getElementById('getUserForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const userId = document.getElementById('userId').value;
+            
+            const response = await fetch(`${apiURL}?id=${userId}`);
+            const result = await response.json();
+            document.getElementById('getResult').innerHTML = JSON.stringify(result);
+        });
+
+        // Update User
+        document.getElementById('updateUserForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const userId = document.getElementById('updateId').value;
+            const name = document.getElementById('updateName').value;
+            const email = document.getElementById('updateEmail').value;
+
+            const response = await fetch(`${apiURL}?id=${userId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email })
+            });
+            const result = await response.json();
+            document.getElementById('updateResult').innerHTML = JSON.stringify(result);
+        });
+
+        // Delete User
+        document.getElementById('deleteUserForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const userId = document.getElementById('deleteId').value;
+
+            const response = await fetch(`${apiURL}?id=${userId}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+            document.getElementById('deleteResult').innerHTML = JSON.stringify(result);
+        });
+    </script>
+
+</body>
+</html>
